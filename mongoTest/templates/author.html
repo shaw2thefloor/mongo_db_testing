@@ -6,8 +6,18 @@
 </head>
 <body>
 
+    <h1>Suspect: {{ author.firstname }} {{ author.lastname }}</h1>
 
-    <h2>{{ author.firstname }} {{ author.lastname }}</h2>
-
+	<h3>Known For</h3>
+	<p>
+    {% for genre in author.genres %}
+        {{ genre }},
+    {% endfor %}
+    </p>
+	<p>
+    {% for pub in publications %}
+        {{ pub.title }}
+    {% endfor %}
+    </p>
 </body>
 </html>

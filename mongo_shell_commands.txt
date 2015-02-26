@@ -1,0 +1,8 @@
+db.authors.insert({"lastname":"Shaw",
+    "firstname":"Felix",
+    "genres":["a", "b", "c"],
+        "phone": [
+            {"number":"1234", "type":"home"},
+            {"number":"5678", "type":"mobile"}
+        ]
+    })

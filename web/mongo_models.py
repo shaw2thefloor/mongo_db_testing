@@ -31,10 +31,31 @@ class Author(Document):
     __database__ = db
     # allows use of dot.notation instead of dict['notation'] (doesn't seem to work for schemaless fields)
     use_dot_notation = True
-
+    use_autorefs = True
     structure={
         'firstname': basestring,
         'lastname': basestring,
+        'genres': [basestring],
+        'phone': [
+            {'number': basestring, 'type': basestring}
+        ]
     }
     required_fields = ['firstname', 'lastname']
     default_values={}
+
+
+@connection.register
+class Publication(Document):
+    # allows additional fields to be added to the document on the fly
+    use_schemaless = True
+    # shortcut to the collection these documents are store in
+    __collection__ = 'publications'
+    # shortcut to the database name
+    __database__ = db
+    # allows use of dot.notation instead of dict['notation'] (doesn't seem to work for schemaless fields)
+    use_dot_notation = True
+    structure = {
+        'title': basestring,
+        # store the id of the author as a string
+        'author': basestring,
+    }
