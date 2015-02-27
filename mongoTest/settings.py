@@ -39,6 +39,12 @@ INSTALLED_APPS = (
     'web',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+  'django.core.context_processors.request',
+  'django.contrib.auth.context_processors.auth',
+  "django.core.context_processors.media",
+)
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +59,9 @@ ROOT_URLCONF = 'mongoTest.urls'
 
 WSGI_APPLICATION = 'mongoTest.wsgi.application'
 
+SESSION_ENGINE = 'redis_sessions.session'
+SESSION_REDIS_HOST = '127.0.0.1'
+SESSION_REDIS_PORT = 6379
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases

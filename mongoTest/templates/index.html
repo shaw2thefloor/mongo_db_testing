@@ -6,7 +6,8 @@
 </head>
 <body>
 {% load web_tags %}
-<form method="GET" action="/mongo/add_author/">
+
+<form method="GET" action="{% url 'mongo:add_author' %}">
 	<table>
 		<tr>
 			<td><lablel for="firstname">Firstname</lablel></td>
@@ -43,11 +44,13 @@
 </form>
 
     <table>
-		<tr><th>First Name</th><th>Last Name</th></tr>
+		<tr><th>First Name</th><th>Last Name</th><th>Delete</th></tr>
 		{% for author in author_list %}
+
 		    <tr>
 			    <td><a href="{% url 'mongo:show_author' author_id=author|mongo_id %}">{{ author.firstname }}</a></td>
 			    <td>{{ author.lastname }}</td>
+			    <td><a href="{% url 'mongo:delete_author' author_id=author|mongo_id %}">delete</a></td>
 			</tr>
 
 		{%  endfor %}

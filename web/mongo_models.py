@@ -44,6 +44,7 @@ class Author(Document):
     default_values={}
 
 
+
 @connection.register
 class Publication(Document):
     # allows additional fields to be added to the document on the fly

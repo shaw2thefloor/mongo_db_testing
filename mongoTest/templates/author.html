@@ -5,19 +5,54 @@
 	<title></title>
 </head>
 <body>
+{% load web_tags %}
 
-    <h1>Suspect: {{ author.firstname }} {{ author.lastname }}</h1>
 
-	<h3>Known For</h3>
-	<p>
-    {% for genre in author.genres %}
-        {{ genre }},
-    {% endfor %}
-    </p>
-	<p>
-    {% for pub in publications %}
-        {{ pub.title }}
-    {% endfor %}
-    </p>
+<h1>Suspect: {{ author.firstname }} {{ author.lastname }}</h1>
+
+{% for genre in author.genres %}
+	{{ genre }},
+{% endfor %}
+
+
+<h3>Add Publication</h3>
+
+<form method="get" action="{% url 'mongo:add_publication' %}">
+	<table>
+		<tr>
+			<td>
+				<label for="title">title</label>
+				<input type="text" name="title" id="title"/>
+				<input type="hidden" name="author_id" value="{{ author|mongo_id }}"/>
+			</td>
+		</tr>
+		<tr>
+			<td><input type="submit"></td>
+		</tr>
+	</table>
+</form>
+
+
+<p>
+<table>
+	<tr>
+	<tr>
+		<th>ID</th>
+		<th>Title</th>
+	    <th>Delete</th>
+	</tr>
+
+
+		{% for pub in publications %}
+			<tr>
+			    <td>{{ forloop.counter }}</td>
+				<td>{{ pub.title }}</td>
+			    <td><a href="{% url 'mongo:delete_publication' publication_id=pub|mongo_id %}">Delete</a></td>
+			</tr>
+
+		{% endfor %}
+
+</table>
+</p>
 </body>
 </html>
