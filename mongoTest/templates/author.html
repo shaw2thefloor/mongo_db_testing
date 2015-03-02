@@ -54,5 +54,39 @@
 
 </table>
 </p>
+
+<p>
+	<form method="get" action="{% url 'mongo:add_address' %}">
+	<table>
+		<tr>
+			<td>
+				<label for="house_number">House Number</label>
+				<input type="text" name="house_number" id="house_number"/>
+			</td>
+			<td>
+				<label for="street">Street</label>
+				<input type="text" name="street" id="street" />
+			</td>
+			<td>
+				<label for="town">Town</label>
+				<input type="text" name="town" id="town"/>
+			</td>
+		</tr>
+		<tr>
+			<td><input type="submit"></td>
+		</tr>
+	</table>
+</form>
+
+</p>
+
+<table>
+<tr><th>Number</th><th>Street</th><th>Town</th></tr>
+{% for a in author.address %}
+    <tr>
+	<td>{{ a.number }}</td><td>{{ a.street }}</td><td>{{ a.town }}</td>
+    </tr>
+{% endfor %}
+</table>
 </body>
 </html>

@@ -10,7 +10,7 @@ def index(request):
 
     # query all authors in databse
     # primary sort key should go last!
-    author_list = to_django_context(connection.Author.find().sort('firstname').sort('lastname'))
+    author_list = connection.Author.find().sort('firstname').sort('lastname')
     return render(request, 'index.html', {"author_list": author_list})
 
 
@@ -29,7 +29,7 @@ def add_author(request):
     type_1 = request.GET.get('type_1')
     number_2 = request.GET.get('number_2')
     type_2 = request.GET.get('type_2')
-    phone = [{number_1: type_1}, {number_2: type_2}]
+    phone = [{type_1: number_1}, {type_2: number_2}]
 
     a.phone = phone
     a.save()
@@ -48,14 +48,32 @@ def show_author(request, author_id):
     return render(request, 'author.html', {"author": author, "publications": pubs})
 
 
-def add_publication(request):
-    author_id = request.GET.get('author_id')
-    pub = connection.Publication()
-    pub.author = author_id
-    pub.title = request.GET.get('title')
-    pub.save()
+def edit_author(request, author_id):
+    #get the author object
+    a = connection.Author.one({"_id": to_mongo_id(author_id)})
+    request.session['author_id'] = author_id
 
-    return HttpResponseRedirect(reverse('mongo:show_author', kwargs={'author_id': author_id}))
+    if(request.method=='POST'):
+        #a.pop('_id')
+        a.firstname = request.POST.get("firstname")
+        a.lastname = request.POST.get("lastname")
+
+        # make list of genres
+        genres = request.POST.get("genres").split(',')
+        a.genres = genres
+
+        # make list of phone numbers to list
+        number_1 = request.POST.get('number_1')
+        type_1 = request.POST.get('type_1')
+        number_2 = request.POST.get('number_2')
+        type_2 = request.POST.get('type_2')
+        phone = [{type_1: number_1}, {type_2: number_2}]
+
+        a.phone = phone
+        a.save()
+        return HttpResponseRedirect(reverse('mongo:index'))
+
+    return render(request, 'edit_author.html', {"author": a})
 
 
 def delete_author(request, author_id):
@@ -67,6 +85,23 @@ def delete_author(request, author_id):
     a.delete()
 
     return HttpResponseRedirect(reverse('mongo:index'))
+
+
+def add_address(request):
+    a = connection.Author.one({"_id": to_mongo_id(request.session['author_id'])})
+    x = {'number': request.GET['house_number'], 'street': request.GET['street'], 'town': request.GET['town']}
+    a.address.append(x)
+    a.save()
+    return HttpResponseRedirect(reverse('mongo:show_author', kwargs={'author_id': request.session['author_id']}))
+
+def add_publication(request):
+    author_id = request.GET.get('author_id')
+    pub = connection.Publication()
+    pub.author = author_id
+    pub.title = request.GET.get('title')
+    pub.save()
+
+    return HttpResponseRedirect(reverse('mongo:show_author', kwargs={'author_id': author_id}))
 
 
 def delete_publication(request, publication_id):

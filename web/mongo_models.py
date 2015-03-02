@@ -32,17 +32,21 @@ class Author(Document):
     # allows use of dot.notation instead of dict['notation'] (doesn't seem to work for schemaless fields)
     use_dot_notation = True
     use_autorefs = True
-    structure={
+    structure = {
         'firstname': basestring,
         'lastname': basestring,
         'genres': [basestring],
+        'address': [
+            {'number': basestring, 'street': basestring, 'town': basestring}
+        ],
         'phone': [
-            {'number': basestring, 'type': basestring}
-        ]
+            {'type': basestring, 'number': basestring}
+        ],
+
+
     }
     required_fields = ['firstname', 'lastname']
-    default_values={}
-
+    default_values = { }
 
 
 @connection.register

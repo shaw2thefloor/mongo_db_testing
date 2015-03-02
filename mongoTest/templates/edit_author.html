@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+{% load web_tags %}
+
+    <form method="post" action="{% url 'mongo:edit_author' author_id=author|mongo_id %}">
+	{% csrf_token %}
+	<table>
+		<tr>
+			<td><lablel for="firstname">Firstname</lablel></td>
+			<td><input type="text" name="firstname" id="firstname" value="{{ author.firstname }}"></td>
+		</tr>
+		<tr>
+			<td><lablel for="lastname">Lastname</lablel></td>
+			<td><input type="text" name="lastname" id="lastname" value="{{ author.lastname }}"></td>
+		</tr>
+		<tr>
+			<td><lablel for="genres">Genres</lablel></td>
+
+			<td><input type="text" name="genres" id="genres" value="{% for g in author.genres %}{{ g }},{% endfor %}">
+
+		    </td>
+		</tr>
+		<tr>
+			<td><lablel for="phone">Phone Number</lablel></td>
+			<td><input type="text" name="number_1" id="phone" value="{{ author.phone.0.home }}">
+				<select name="type_1">
+					<option value="home">Home</option>
+					<option value="mobile">Mobile</option>
+				</select>
+			</td>
+            <td><input type="text" name="number_2" value="{{ author.phone.1.home }}">
+				<select name="type_2">
+					<option value="home">Home</option>
+					<option value="mobile">Mobile</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="submit"></td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>
